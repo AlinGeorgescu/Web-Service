@@ -635,12 +635,14 @@ def temp_get():
         # Dacă cererea nu a avut argumente în URL.
         query = """ SELECT city_id, temp_id, temp_value,           \
                     TO_CHAR(temp_timestamp,'YYYY-MM-DD HH:MI:SS')  \
+                    AS temp_timestamp                              \
                     FROM temperatures; """
     else:
         # Dacă cererea a avut argumente.
         query = """ SELECT temperatures.city_id, temperatures.temp_id,         \
                     temperatures.temp_value,                                   \
                     TO_CHAR(temperatures.temp_timestamp,'YYYY-MM-DD HH:MI:SS') \
+                    AS temp_timestamp                                          \
                     FROM temperatures INNER JOIN cities                        \
                     ON temperatures.city_id = cities.city_id                   \
                     WHERE %s ; """ % condition
@@ -700,6 +702,7 @@ def temp_by_city_get(city_id=None):
 
     query = """ SELECT city_id, temp_id, temp_value,          \
                 TO_CHAR(temp_timestamp,'YYYY-MM-DD HH:MI:SS') \
+                AS temp_timestamp                             \
                 FROM temperatures %s; """ % condition
 
     try:
@@ -758,6 +761,7 @@ def temp_by_country_get(country_id=None):
     query = """ SELECT temperatures.city_id, temperatures.temp_id,             \
                 temperatures.temp_value,                                       \
                 TO_CHAR(temperatures.temp_timestamp,'YYYY-MM-DD HH:MI:SS')     \
+                AS temp_timestamp                                              \
                 FROM temperatures INNER JOIN cities                            \
                 ON temperatures.city_id = cities.city_id INNER JOIN countries  \
                 ON cities.country_id = countries.country_id %s; """ % condition
